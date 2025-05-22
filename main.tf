@@ -46,6 +46,7 @@ resource "aws_s3_bucket_acl" "bucket" {
 }
 
 resource "aws_s3_bucket_policy" "policy" {
+  depends_on = [ aws_s3_bucket_acl.bucket ]
   bucket = aws_s3_bucket.bucket.id
   policy = <<EOF
 {
@@ -68,9 +69,21 @@ EOF
 }
 
 resource "aws_s3_object" "webapp" {
+  depends_on = [ aws_s3_bucket_acl.bucket ]
   acl          = "public-read"
   key          = "index.html"
   bucket       = aws_s3_bucket.bucket.id
   content      = file("${path.module}/assets/index.html")
   content_type = "text/html"
+}
+
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+  bucket = aws_s3_bucket.bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
 }
