@@ -78,6 +78,7 @@ resource "aws_s3_object" "webapp" {
 }
 
 
+/* 
 resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
   bucket = aws_s3_bucket.bucket.id
 
@@ -87,3 +88,4 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
     }
   }
 }
+*/
